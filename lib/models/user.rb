@@ -8,11 +8,13 @@ module GoCLI
     # 1. Add two instance variables: name and email 
     # 2. Write all necessary changes, including in other files
     def initialize(opts = {})
+
       @name = opts[:name] || ''
       @email = opts[:email] || ''
       @phone = opts[:phone] || ''
       @password = opts[:password] || ''
-      @saldo = 0 || ''
+      @saldo = opts[:saldo] || ''
+
     end
 
     def self.load
@@ -26,7 +28,8 @@ module GoCLI
         name:     data['name'],
         email:    data['email'],
         phone:    data['phone'],
-        password: data['password']
+        password: data['password'],
+        saldo:    data['saldo']
       )
     end
 
@@ -46,8 +49,26 @@ module GoCLI
       end
     end
 
-    def edit!
+    def self.topup_gopay(ammount)
+      file = File.read("#{File.expand_path(File.dirname(__FILE__))}/../../data/user.json")
+      data = JSON.parse(file)
+
+      data["saldo"] += ammount
       
+      File.open("#{File.expand_path(File.dirname(__FILE__))}/../../data/user.json", "w") do |f|
+        f.write JSON.generate(data)
+      end
+    end
+
+    def self.subtract_gopay(ammount)
+      file = File.read("#{File.expand_path(File.dirname(__FILE__))}/../../data/user.json")
+      data = JSON.parse(file)
+
+      data["saldo"] -= ammount
+      
+      File.open("#{File.expand_path(File.dirname(__FILE__))}/../../data/user.json", "w") do |f|
+        f.write JSON.generate(data)
+      end
     end
   end
 end

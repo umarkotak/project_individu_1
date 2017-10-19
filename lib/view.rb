@@ -80,7 +80,28 @@ module GoCLI
       puts ''
 
       puts '1. Edit Profile'
-      puts '2. Back'
+      puts '2. Topup Gopay'
+      puts '3. Back'
+
+      print 'Enter your option: '
+      form[:steps] << {id: __method__, option: gets.chomp}
+
+      form
+    end
+
+    def self.topup_gopay(opts = {})
+      form = opts
+
+      puts 'Topup Gopay'
+      puts ''
+
+      print 'Masukkan saldo : '
+      form[:saldo] = gets.chomp
+
+      puts ''
+      puts '1. Confirm'
+      puts '2. Cancel'
+      puts '3. Back'
 
       print 'Enter your option: '
       form[:steps] << {id: __method__, option: gets.chomp}
@@ -133,8 +154,12 @@ module GoCLI
       puts 'Order goride'
       puts ''
 
-      puts 'Current are of services'
+      puts 'Current area of services :'
       puts "#{form[:available_loc]}"
+      puts ''
+
+      puts 'Driver position status :'
+      puts "#{form[:driver_position_status]}"
       puts ''
 
       print 'Your position : '
@@ -173,10 +198,16 @@ module GoCLI
       puts "Driver      : #{form[:location].fleet_name}"
       puts ''
 
+      puts '1. Cash'
+      puts '2. Go Pay'
+      print 'Choose payment methods : '
+      form[:paymethods] = gets.chomp
+
+      puts ''
       puts '1. Confirm order'
       puts '2. Retry order'
       puts '3. Back to main menu'
-      print 'Enter your option: '
+      print 'Enter your option      : '
       form[:steps] << {id: __method__, option: gets.chomp}
 
       form
