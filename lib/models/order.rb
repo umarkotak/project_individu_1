@@ -85,5 +85,16 @@ module GoCLI
 
       data
     end
+
+    def self.check_promo(code)
+      file = File.read("#{File.expand_path(File.dirname(__FILE__))}/../../data/promo.json")
+      data = JSON.parse(file)
+      potongan = 0
+      data.each do |hsh|
+        potongan = hsh["potongan"].to_i  if hsh["kode_promo"] == code
+      end
+
+      potongan
+    end
   end
 end

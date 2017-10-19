@@ -162,16 +162,22 @@ module GoCLI
       puts "#{form[:driver_position_status]}"
       puts ''
 
-      print 'Your position : '
+      print 'Your position    : '
       form[:position] = gets.chomp
 
       print 'Your destination : '
       form[:destination] = gets.chomp
 
+      puts ''
       puts "1. Go Ojek"
       puts "2. Go Car"
-      print 'Service type : '
+      print 'Service type     : '
       form[:type] = gets.chomp
+
+      puts ''
+      print 'Promo code       : '
+      form[:promo_code] = gets.chomp
+
 
       form
     end
@@ -192,10 +198,16 @@ module GoCLI
       puts "Position    : #{form[:location].position}"
       puts "Destination : #{form[:location].destination}"
       puts "Distance    : #{form[:location].distance}"
-      puts "Price       : #{form[:location].price}"
       puts "Type        : #{form[:location].type}"
       puts '--------------------------'
       puts "Driver      : #{form[:location].fleet_name}"
+      puts '--------------------------'
+      puts "Promo code  : #{form[:promo_code]}"
+      puts "Price       : #{form[:location].price + form[:potongan]}"
+      puts "Potongan    : #{form[:potongan]}"
+      puts '--------------------------'
+      puts "Payment     : #{form[:location].price}"
+      puts '--------------------------'
       puts ''
 
       puts '1. Cash'

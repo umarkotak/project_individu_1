@@ -185,14 +185,19 @@ module GoCLI
 
         location.distance = location.calculate_distance(p1, p2)
 
+        promo_code = form[:promo_code]
+
+        potongan = Order.check_promo(promo_code)
+        form[:potongan] = potongan
+
         if location.type.to_i == 1
-          location.price = (location.distance * 1500).to_f
+          location.price = (location.distance * 1500) - potongan.to_f
           location.type = 'gojek'
         elsif location.type.to_i == 2
-          location.price = (location.distance * 2500).to_f
+          location.price = (location.distance * 2500) - potongan.to_f
           location.type = 'gocar'
         else
-          location.price = (location.distance * 1500).to_f
+          location.price = (location.distance * 1500) - potongan.to_f
         end
 
         location.fleet_name = location.search_fleet(p1, location.type)[0]
@@ -248,6 +253,8 @@ module GoCLI
           saldo = form[:user].saldo
           price = form[:location].price
 
+          # gopay validation
+          # gopay substraction
           if saldo > price
             User.subtract_gopay(price)
             form[:user] = User.load
@@ -255,8 +262,6 @@ module GoCLI
             form[:flash_msg] = 'Insufficient Gopay credit'
             order_goride_confirm(form)
           end
-          # gopay validation
-          # gopay substraction
         else
           form[:flash_msg] = 'Wrong payment methods'
           order_goride_confirm(form)
@@ -328,7 +333,7 @@ module GoCLI
 
     # TODO: credential matching with email or phone
     def credential_match?(user, login, password)
-      return false unless user.phone == login || user.email == login || user.name == login
+      return false unless user.phone == login || user.email == login
       return false unless user.password == password
       true
     end
